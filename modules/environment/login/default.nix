@@ -82,7 +82,8 @@ in
     environment.files = {
       inherit login loginInner;
 
-      prootStatic = "/nix/store/yrrs22jsl1y8niwzs2vvk0vblicr3903-proot-termux-static-aarch64-unknown-linux-android-unstable-2023-05-13";
+      #prootStatic = "/nix/store/yrrs22jsl1y8niwzs2vvk0vblicr3903-proot-termux-static-aarch64-unknown-linux-android-unstable-2023-05-13";
+      prootStatic = "${pkgs.proot-termux}";
     };
 
   };
