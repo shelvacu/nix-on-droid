@@ -6,7 +6,7 @@ with lib;
 
 let
   nixOnDroidPkgs = import ../../../pkgs {
-            nixpkgs = pkgs.nixpkgs;
+            nixpkgs = import <nixpkgs>;
             system = "aarch64-linux";
           };
   
