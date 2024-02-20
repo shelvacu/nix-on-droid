@@ -83,7 +83,8 @@ in
       inherit login loginInner;
 
       #prootStatic = "/nix/store/yrrs22jsl1y8niwzs2vvk0vblicr3903-proot-termux-static-aarch64-unknown-linux-android-unstable-2023-05-13";
-      prootStatic = "${pkgs.prootTermux}";
+      # prootStatic = "${pkgs.prootTermux}";
+      prootStatic = "${pkgs.callPackage ../../../pkgs/cross-compiling/proot-termux.nix { }}";
     };
 
   };
