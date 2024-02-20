@@ -1,12 +1,12 @@
 # Copyright (c) 2019-2023, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ nixpkgs, config, lib, pkgs, initialPackageInfo, ... }:
+{ config, lib, pkgs, initialPackageInfo, ... }:
 
 with lib;
 
 let
   nixOnDroidPkgs = import ../../../pkgs {
-            inherit nixpkgs;
+            nixpkgs = pkgs;
             system = "aarch64-linux";
           };
   
