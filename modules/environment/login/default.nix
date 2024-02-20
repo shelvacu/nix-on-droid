@@ -1,10 +1,15 @@
 # Copyright (c) 2019-2023, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ config, lib, pkgs, initialPackageInfo, ... }:
+{ nixpkgs, config, lib, pkgs, initialPackageInfo, ... }:
 
 with lib;
 
 let
+  nixOnDroidPkgs = import ./pkgs {
+            inherit nixpkgs;
+            system = "aarch64-linux";
+          };
+  
   cfg = config.environment.files;
 
   login = pkgs.callPackage ./login.nix { inherit config; };
@@ -84,7 +89,7 @@ in
 
       #prootStatic = "/nix/store/yrrs22jsl1y8niwzs2vvk0vblicr3903-proot-termux-static-aarch64-unknown-linux-android-unstable-2023-05-13";
       # prootStatic = "${pkgs.prootTermux}";
-      prootStatic = "${pkgs.callPackage ../../../pkgs/cross-compiling/proot-termux.nix { }}";
+      prootStatic = "${nixOnDroidPkgs.customPkgs.prootTermux}";
     };
 
   };
