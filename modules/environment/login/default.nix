@@ -1,14 +1,14 @@
 # Copyright (c) 2019-2023, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ config, lib, pkgs, initialPackageInfo, ... }:
+{ config, lib, pkgs, bootstrapPkgs, initialPackageInfo, ... }:
 
 with lib;
 
 let
   nixOnDroidPkgs = import ../../../pkgs {
-            nixpkgs = import <nixpkgs>;
-            system = "aarch64-linux";
-          };
+    nixpkgs = builtins.trace bootstrapPkgs.shortRev bootstrapPkgs;
+    system = "aarch64-linux";
+  };
   
   cfg = config.environment.files;
 

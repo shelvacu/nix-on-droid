@@ -25,10 +25,10 @@ let
   mkActivationCmds = activation: concatStringsSep "\n" (
     mapAttrsToList
       (name: value: ''
-        noteEcho "Activating ${name}"
+        noteEcho "Activating ${(builtins.trace name name)}"
         ${value}
       '')
-      activation
+      (builtins.trace activation activation)
   );
 
   activationScript = pkgs.writeScript "activation-script" ''

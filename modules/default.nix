@@ -3,6 +3,7 @@
 { config ? null
 , extraSpecialArgs ? { }
 , pkgs ? import <nixpkgs> { }
+, bootstrapPkgs
 , home-manager-path ? <home-manager>
 , isFlake ? false
 }:
@@ -17,11 +18,11 @@ let
     else if builtins.pathExists defaultConfigFile then defaultConfigFile
     else pkgs.config.nix-on-droid or (throw "No config file found! Create one in ~/.config/nixpkgs/nix-on-droid.nix");
 
-  nodModules = import ./module-list.nix { inherit pkgs home-manager-path isFlake; };
+  nodModules = import ./module-list.nix { inherit pkgs bootstrapPkgs home-manager-path isFlake; };
 
   rawModule = evalModules {
     modules = [ configModule ] ++ nodModules;
-    specialArgs = extraSpecialArgs;
+    specialArgs = extraSpecialArgs // { inherit bootstrapPkgs; };
   };
 
   failedAssertions = map (x: x.message) (filter (x: !x.assertion) rawModule.config.assertions);

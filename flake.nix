@@ -105,6 +105,7 @@
             (import ./modules {
               inherit extraSpecialArgs home-manager-path pkgs;
               config.imports = modules;
+              bootstrapPkgs = nixpkgs-for-bootstrap;#.legacyPackages."${pkgs.system}";
               isFlake = true;
             });
 

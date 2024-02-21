@@ -25,6 +25,8 @@ let
   modules = import ../modules {
     inherit pkgs;
 
+    bootstrapPkgs = pkgs;
+
     isFlake = true;
 
     config = {
@@ -57,6 +59,7 @@ let
     pkgs // customPkgs // {
       inherit (modules) config;
       inherit callPackage nixpkgs nixDirectory initialPackageInfo;
+      bootstrapPkgs = pkgs;
     }
   );
 

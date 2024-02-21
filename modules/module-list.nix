@@ -1,6 +1,6 @@
 # Copyright (c) 2019-2022, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ pkgs, home-manager-path, isFlake }:
+{ pkgs, bootstrapPkgs, home-manager-path, isFlake }:
 
 [
   ./build/activation.nix
@@ -26,7 +26,7 @@
   {
     _file = ./module-list.nix;
     _module.args = {
-      inherit home-manager-path isFlake;
+      inherit home-manager-path isFlake bootstrapPkgs;
       pkgs = pkgs.lib.mkDefault pkgs;
     };
   }
