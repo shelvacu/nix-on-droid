@@ -21,25 +21,27 @@ let
     name = "nix-on-droid-session-init.sh";
     destination = "/etc/profile.d/nix-on-droid-session-init.sh";
     text = ''
-      # Only source this once.
-      [ -n "$__NOD_SESS_INIT_SOURCED" ] && return
-      export __NOD_SESS_INIT_SOURCED=1
+      if [ "$__NOD_SESS_INIT_SOURCED" = "" ]; then
+        # This `export`s everything, so only run it once.
+        export __NOD_SESS_INIT_SOURCED=1
 
-      . "${config.user.home}/.nix-profile/etc/profile.d/nix.sh"
+        . "${config.user.home}/.nix-profile/etc/profile.d/nix.sh"
 
-      # workaround for nix 2.4, see https://github.com/NixOS/nixpkgs/issues/149791
-      ${addToNixPath "${config.user.home}/.nix-defexpr/channels"}
-      # Workaround for https://github.com/NixOS/nix/issues/1865
-      ${addToNixPath "nixpkgs=${config.user.home}/.nix-defexpr/channels/nixpkgs/"}
+        # workaround for nix 2.4, see https://github.com/NixOS/nixpkgs/issues/149791
+        ${addToNixPath "${config.user.home}/.nix-defexpr/channels"}
+        # Workaround for https://github.com/NixOS/nix/issues/1865
+        ${addToNixPath "nixpkgs=${config.user.home}/.nix-defexpr/channels/nixpkgs/"}
 
-      ${optionalString (config.home-manager.config != null) ''
-        if [ -e "${config.user.home}/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
-          . "${config.user.home}/.nix-profile/etc/profile.d/hm-session-vars.sh"
-        fi
-      ''}
+        ${optionalString (config.home-manager.config != null) ''
+          if [ -e "${config.user.home}/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+            . "${config.user.home}/.nix-profile/etc/profile.d/hm-session-vars.sh"
+          fi
+        ''}
 
-      ${exportAll cfg.sessionVariables}
+        ${exportAll cfg.sessionVariables}
+      fi
 
+      # shellInit
       ${cfg.shellInit}
     '';
   };
