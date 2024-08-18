@@ -74,6 +74,7 @@
         , modules ? [ ]
         , extraSpecialArgs ? { }
         , home-manager-path ? home-manager.outPath
+        , nixpkgs-path ? nixpkgs.outPath
           # deprecated:
         , config ? null
         , extraModules ? null
@@ -102,7 +103,9 @@
             (import ./modules {
               targetSystem = pkgs.system; # system to cross-compile to
               inherit extraSpecialArgs home-manager-path pkgs;
-              config.imports = modules;
+              config.imports = modules ++ [ "${nixpkgs-path}/nixos/modules/misc/nixpkgs-flake.nix" {
+                config.nixpkgs.flake.source = nixpkgs-path;
+              } ];
               isFlake = true;
             });
 
