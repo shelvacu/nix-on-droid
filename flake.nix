@@ -103,7 +103,7 @@
             (import ./modules {
               targetSystem = pkgs.system; # system to cross-compile to
               inherit extraSpecialArgs home-manager-path pkgs;
-              config.imports = modules ++ [ "${nixpkgs-path}/nixos/modules/misc/nixpkgs-flake.nix" {
+              config.imports = modules ++ [ "${nixpkgs-path}/nixos/modules/misc/nixpkgs-flake.nix" "${nixpkgs-path}/nixos/modules/config/nix-channel.nix" {
                 config.nixpkgs.flake.source = nixpkgs-path;
               } ];
               isFlake = true;
