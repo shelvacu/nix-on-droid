@@ -32,7 +32,7 @@ def run(*args: str) -> None:
 
 def run_capture(*args: str) -> str:
     proc = subprocess.run(args, check=True, stdout=subprocess.PIPE, stderr=None)
-    return proc.stdout.decode("utf-8")
+    return proc.stdout.decode("utf-8").strip()
 
 
 def log(msg: str) -> None:
@@ -50,15 +50,15 @@ def log(msg: str) -> None:
 )
 @click.option(
     "--arches",
-    default=["aarch64-linux", "x86_64-linux"],
-    help="Which architectures to build for. Default all",
+    default="aarch64,x86_64",
+    help="Which architectures to build for, comma-separated.",
 )
 @click.argument("public-url")
 def go(
     public_url: str,
     rsync_target: str | None,
     bootstrap_url: str | None,
-    arches: list[str],
+    arches: str,
 ) -> None:
     """
     Builds bootstrap zip balls and source code tar ball (for usage as a channel or flake). If rsync_target is specified, uploads it to the directory specified in rsync_target. The contents of this directory should be reachable by the android device with public_url.
@@ -110,7 +110,7 @@ def go(
 
     uploads: list[str] = []
 
-    for arch in arches:
+    for arch in arches.split(","):
         log(f"building {arch} proot...")
         proot = run_capture(
             NIX, "build", "--no-link", "--print-out-paths", f".#prootTermux-{arch}"
